@@ -113,8 +113,8 @@ def details_info_getter(details_url):
 
 
 # data output to `xls` file
-def data_output_xls(data_list, current_page):
-    print('开始写文件(第'+str(current_page)+'页)....')
+def data_output_xls(data_list, page_no):
+    print('开始写文件(第' + str(page_no) + '页)....')
     wb = Workbook()
     sheet_names = wb.get_sheet_names()
     work_sheet = wb.get_sheet_by_name(sheet_names[0])
@@ -126,7 +126,7 @@ def data_output_xls(data_list, current_page):
     # save begin
     try:
         wb.save(filename=file_name)
-        print('完成写文件(第'+str(current_page)+'页)....')
+        print('完成写文件(第' + str(page_no) + '页)....')
     except IOError as iox:
         print('文件读写异常')
         print(data_list)  # 将数据输出,避免数据因异常丢失
@@ -141,16 +141,16 @@ def data_output_xls(data_list, current_page):
 
 
 # spider logic...
-def spider(current_page=1):
+def spider(page_no):
     while True:
-        url_list = details_url_list_getter(url_constructor(current_page))
+        url_list = details_url_list_getter(url_constructor(page_no))
         if len(url_list) > 0:
-            print('开始获取第' + str(current_page) + '页数据...')
+            print('开始获取第' + str(page_no) + '页数据...')
             for url in url_list:
                 page_info_list.append(details_info_getter(url))
-            print('完成获取第' + str(current_page) + '页数据...')
-            data_output_xls(page_info_list, current_page)
-            current_page += 1
+            print('完成获取第' + str(page_no) + '页数据...')
+            data_output_xls(page_info_list, page_no)
+            page_no += 1
         else:
             break
 
